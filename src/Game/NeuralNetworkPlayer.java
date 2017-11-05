@@ -35,6 +35,7 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
         Point posRight = Snake.Direction.getPointAfterMoving(relativeRightDir, posHead);
 
 
+        // check for other parts of snake...
         for (int i = 2; i < getSnake().size(); i++) {
             JPanel snakePart = getSnake().get(i);
 
@@ -46,7 +47,7 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
             if (new Point(snakePart.getX(), snakePart.getY()).equals(posLeft)) {
                 obstacleLeft = -1;
             } else if (new Point(getFood().getX(), getFood().getY()).equals(new Point(snakePart.getX(), snakePart.getY()))) {
-                obstacleFront = 1;
+                obstacleFront = -1;
             }
 
 
@@ -55,6 +56,8 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
             }
 
         }
+
+        // check where food is...
         if (new Point(getFood().getX(), getFood().getY()).equals(posFront)) {
             obstacleFront = 1;
         }

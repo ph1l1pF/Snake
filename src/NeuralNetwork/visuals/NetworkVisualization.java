@@ -35,6 +35,9 @@ public class NetworkVisualization extends JFrame {
                 int x = i * (10 + 300) + 100;
                 int y = k * (10 + 60) + offset;
                 g2.draw(new Ellipse2D.Double(x, y, 10, 10));
+                for (int m = 0; m < neuralNetwork.getNeurons()[i][k].getIngoingConnections().size(); m++) {
+                    g2.drawString(String.valueOf(neuralNetwork.getNeurons()[i][k].getIngoingConnections().get(m).getWeight()), x, y + m * 5);
+                }
                 map.put(neuralNetwork.getNeurons()[i][k], new Point(x, y + 10));
             }
         }

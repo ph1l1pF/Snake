@@ -1,7 +1,6 @@
 package NeuralNetwork;
 
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,23 +39,11 @@ public class NeuralNetwork implements Cloneable {
 
     public void generateFullmesh() {
 
-        for (int i = neurons.length - 1; i > 0; i--) {
-            List<Point> lstTuplesVisited = new ArrayList<>();
-            for (int j = 0; j < neurons[i].length; j++) {
-                for (int k = 0; k < neurons[i - 1].length; k++) {
-
-                    if (lstTuplesVisited.contains(new
-                            Point(j, k))) {
-                        continue;
-                    } else {
-                        lstTuplesVisited.add(new Point(k, j));
-                    }
-
-
-                    Connection con = new Connection(neurons[i - 1][k], neurons[i][j], new Random().nextDouble());
-                    neurons[i][j].addIngoingConnection(con);
-                    connections.add(con);
-
+        for (int i = 1; i < neurons.length; i++) {
+            for (int k = 0; k < neurons[i].length; k++) {
+                for (int l = 0; l < neurons[i - 1].length; l++) {
+                    Connection con = new Connection(neurons[i - 1][l], neurons[i][k], new Random().nextDouble());
+                    neurons[i][k].getIngoingConnections().add(con);
                 }
             }
         }

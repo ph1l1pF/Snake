@@ -63,7 +63,7 @@ public class Snake extends JFrame {
 
         }, 0, clockPeriod);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         setVisible(true);
     }

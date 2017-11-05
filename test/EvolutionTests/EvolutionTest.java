@@ -1,8 +1,9 @@
 package EvolutionTests;
 
+import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.Evolution;
 import NeuralNetwork.*;
-import org.junit.Assert;
+import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Before;
 import org.testng.annotations.Test;
 
@@ -29,24 +30,10 @@ public class EvolutionTest {
         NeuralNetwork net1 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
         NeuralNetwork net2 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
 
-
-        NeuralNetwork netChild = Evolution.getInstance().getCrossOver().crossOver(net1, net2);
-        boolean equal = true;
-        for (int i = 1; i < net1.getNeurons().length; i++) {
-            for (int k = 1; k < net1.getNeurons()[i].length; k++) {
-                for (int m = 0; m < net1.getNeurons()[i][k].getIngoingConnections().size(); m++) {
-                    double wchild = netChild.getNeurons()[i][k].getIngoingConnections().get(m).getWeight();
-                    double w1 = net1.getNeurons()[i][k].getIngoingConnections().get(m).getWeight();
-                    double w2 = net2.getNeurons()[i][k].getIngoingConnections().get(m).getWeight();
-
-                    if (wchild != (w1 + w2) / 2.0) {
-                        equal = false;
-                    }
-                }
-            }
-        }
-
-        Assert.assertTrue(equal);
+        NeuralNetwork child = new ChromosomeCrossOver().crossOver(net1, net2);
+        new NetworkVisualization(net1, "net1");
+        new NetworkVisualization(net2, "net2");
+        new NetworkVisualization(child, "child");
     }
 
 }

@@ -8,6 +8,7 @@ import NeuralNetwork.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Evolution {
     /**
      * The probability that a connection will be changed during mutation
      */
-    private final double PROBABILITY_CONNECTION_AFFECTED = 0.3;
+    private final double PROBABILITY_CONNECTION_AFFECTED = 0.1;
     private final int NUM_HIDDEN_NEURONS = 3;
     int numGeneration = 0;
     private ICrossOver crossOver = new ChromosomeCrossOver();
@@ -55,6 +56,7 @@ public class Evolution {
         }
         if (snakeGame != null) {
             snakeGame.setVisible(false);
+            snakeGame.dispatchEvent(new WindowEvent(snakeGame, WindowEvent.WINDOW_CLOSING));
             // snakeGame.getContentPane().removeAll();
             numGeneration++;
         }
@@ -159,17 +161,16 @@ public class Evolution {
     private void mutate(List<NeuralNetworkPlayer> lstPlayers) {
         Random random = new Random();
         for (NeuralNetworkPlayer player : lstPlayers) {
-            if (random.nextDouble() <= MUTATION_PROBABILITY) {
-                for (Connection connection : player.getNetwork().getConnections()) {
-                    if (random.nextDouble() <= PROBABILITY_CONNECTION_AFFECTED) {
-                        double manipulationValue = random.nextDouble();
-                        if (random.nextBoolean()) {
-                            manipulationValue /= 1;
-                        }
-                        connection.setWeight(connection.getWeight() * manipulationValue);
+            for (Connection connection : player.getNetwork().getConnections()) {
+                if (random.nextDouble() <= PROBABILITY_CONNECTION_AFFECTED) {
+                    double manipulationValue = random.nextDouble();
+                    if (random.nextBoolean()) {
+                        manipulationValue /= 1;
                     }
+                    connection.setWeight(connection.getWeight() * manipulationValue);
                 }
             }
+
         }
 
 
