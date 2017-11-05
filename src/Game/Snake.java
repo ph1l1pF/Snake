@@ -1,7 +1,7 @@
 package Game;
 
 
-import Evolution.Evolution;
+import Evolution.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,13 +28,12 @@ public class Snake extends JFrame {
     public void startGame(List<NeuralNetworkPlayer> lstPlayers) {
         getContentPane().removeAll();
         this.lstPlayers = lstPlayers;
-        for(AbstractPlayer player : this.lstPlayers){
+        for (AbstractPlayer player : this.lstPlayers) {
             player.setHasLost(false);
             player.getSnake().clear();
         }
 
         for (AbstractPlayer player : lstPlayers) {
-            //getContentPane().add(player.getFood());
             placeFood(player);
             createNewSnakePart(true, player);
         }
@@ -47,21 +46,19 @@ public class Snake extends JFrame {
 
             @Override
             public void run() {
-                try {
-                    for (AbstractPlayer player : lstPlayers) {
-                        if (player.getSnake().size() == 0) {
-                            return;
-                        }
+
+                for (AbstractPlayer player : lstPlayers) {
+                    if (player.getSnake().size() == 0) {
+                        return;
                     }
-                    for (AbstractPlayer player : lstPlayers) {
-                        player.makeMove();
-                        moveSnake(player);
-                        checkForCollision(player);
-                        checkIfFoodIsHit(player);
-                    }
-                } catch (ArrayIndexOutOfBoundsException e){
-                    // do nothing
                 }
+                for (AbstractPlayer player : lstPlayers) {
+                    player.makeMove();
+                    moveSnake(player);
+                    checkForCollision(player);
+                    checkIfFoodIsHit(player);
+                }
+
             }
 
         }, 0, clockPeriod);
@@ -92,13 +89,22 @@ public class Snake extends JFrame {
         }
     }
 
-    private void printStats(){
+    private void printStats() {
         Object[] stats = updateTitle();
         System.out.println("Generation " + stats[3] + "\n");
         System.out.println("Min " + stats[0]);
         System.out.println("Max " + stats[1]);
         System.out.println("Avg " + stats[2]);
-        System.out.println("-------------------"+"\n\n");
+        System.out.println("-------------------" + "\n\n");
+        Object[] arr = updateTitle();
+        String string = "";
+        for (Object o : arr) {
+            string += String.valueOf(o) + ";";
+        }
+
+        List<String> lines = new ArrayList<>();
+        lines.add(string);
+        new StatsWriter().writeStats(lines);
     }
 
     private void checkIfFoodIsHit(AbstractPlayer player) {
@@ -123,7 +129,7 @@ public class Snake extends JFrame {
         return new Point(x, y);
     }
 
-    private Object[] updateTitle() {
+    public Object[] updateTitle() {
         int min = Integer.MAX_VALUE;
         int max = 0;
         int numAlive = 0;
@@ -137,17 +143,17 @@ public class Snake extends JFrame {
                 min = size;
             }
             avg += size;
-            if(!player.hasLost()){
+            if (!player.hasLost()) {
                 numAlive++;
             }
         }
         avg /= lstPlayers.size();
         avg = Math.floor(avg);
         int generationNumber = Evolution.getInstance().getCurrentGenerationNumber();
-       setTitle("Generation: " + generationNumber + "\t" + "Snakes alive: " + numAlive + "\t" + "Min: "
-                + min + "\t" + "Max: " + max + "\t" + "Avg: " + (int)avg);
+        setTitle("Generation: " + generationNumber + "\t" + "Snakes alive: " + numAlive + "\t" + "Min: "
+                + min + "\t" + "Max: " + max + "\t" + "Avg: " + (int) avg);
 
-       return new Object[]{min,max,avg,generationNumber};
+        return new Object[]{min, max, avg, generationNumber};
     }
 
     private void placeFood(AbstractPlayer player) {

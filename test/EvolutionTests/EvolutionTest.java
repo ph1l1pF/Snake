@@ -30,7 +30,7 @@ public class EvolutionTest {
         NeuralNetwork net2 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
 
 
-        NeuralNetwork netChild = Evolution.getInstance().crossOver(net1, net2);
+        NeuralNetwork netChild = Evolution.getInstance().getCrossOver().crossOver(net1, net2);
         boolean equal = true;
         for (int i = 1; i < net1.getNeurons().length; i++) {
             for (int k = 1; k < net1.getNeurons()[i].length; k++) {

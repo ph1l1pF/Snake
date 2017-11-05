@@ -8,6 +8,10 @@ public abstract class Neuron {
 
     private String label;
 
+    public void setIngoingConnections(List<Connection> ingoingConnections) {
+        this.ingoingConnections = ingoingConnections;
+    }
+
     private List<Connection> ingoingConnections = new ArrayList<>();
 
     private double bias;
