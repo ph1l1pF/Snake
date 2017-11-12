@@ -114,7 +114,6 @@ public class Evolution {
             NeuralNetworkPlayer parent1 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
             NeuralNetworkPlayer parent2 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
 
-            System.out.println(fitness(parent1) + " und " + fitness(parent2));
 
             NeuralNetwork child = crossOver.crossOver(parent1.getNetwork(), parent2.getNetwork());
             newPopulation.add(child);

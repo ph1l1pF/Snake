@@ -16,12 +16,12 @@ public class MutationImpl implements IMutation {
 
     @Override
     public NeuralNetwork mutate(NeuralNetwork network) {
-        // NeuralNetwork newNetwork = network.deepCopy();
+        NeuralNetwork newNetwork = network.deepCopy();
         Random random = new Random();
 
-        for (int i = 0; i < network.getNeurons().length; i++) {
-            for (int k = 0; k < network.getNeurons()[i].length; k++) {
-                for (Connection connection : network.getNeurons()[i][k].getIngoingConnections()) {
+        for (int i = 0; i < newNetwork.getNeurons().length; i++) {
+            for (int k = 0; k < newNetwork.getNeurons()[i].length; k++) {
+                for (Connection connection : newNetwork.getNeurons()[i][k].getIngoingConnections()) {
                     if (random.nextDouble() <= PROBABILITY_CONNECTION_AFFECTED) {
                         double manipulationValue = random.nextDouble();
                         if (random.nextBoolean()) {
@@ -32,6 +32,6 @@ public class MutationImpl implements IMutation {
                 }
             }
         }
-        return network;
+        return newNetwork;
     }
 }

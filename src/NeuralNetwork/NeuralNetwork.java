@@ -74,13 +74,12 @@ public class NeuralNetwork {
         for (int i = 0; i < getNeurons().length; i++) {
             for (int k = 0; k < getNeurons()[i].length; k++) {
                 Neuron originalNeuron = getNeurons()[i][k];
-                Neuron copyNeuron = copy.getNeurons()[i][k];
                 if (originalNeuron instanceof InputNeuron) {
-                    copy.getNeurons()[i][k] = new InputNeuron(originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new InputNeuron("copy " + originalNeuron.getLabel());
                 } else if (originalNeuron instanceof HiddenNeuron) {
-                    copy.getNeurons()[i][k] = new HiddenNeuron(originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new HiddenNeuron("copy " + originalNeuron.getLabel());
                 } else if (originalNeuron instanceof OutputNeuron) {
-                    copy.getNeurons()[i][k] = new OutputNeuron(originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new OutputNeuron("copy " + originalNeuron.getLabel());
                 }
                 copy.getNeurons()[i][k].setBias(originalNeuron.getBias());
 
@@ -101,8 +100,10 @@ public class NeuralNetwork {
                     }
                 }
             }
-            copy.neurons[end.x][end.y].addIngoingConnection(currentCon);
-            copy.connections.add(new Connection(neurons[start.x][start.y], neurons[end.x][end.y], currentCon.getWeight()));
+
+            Connection copyCon = new Connection(copy.neurons[start.x][start.y], copy.neurons[end.x][end.y], currentCon.getWeight());
+            copy.neurons[end.x][end.y].addIngoingConnection(copyCon);
+            copy.connections.add(copyCon);
         }
 
         return copy;
