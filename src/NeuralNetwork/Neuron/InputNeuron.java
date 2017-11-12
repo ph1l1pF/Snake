@@ -1,4 +1,4 @@
-package NeuralNetwork;
+package NeuralNetwork.Neuron;
 
 public class InputNeuron extends Neuron {
 

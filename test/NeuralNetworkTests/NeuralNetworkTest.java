@@ -1,8 +1,14 @@
 package NeuralNetworkTests;
 
+import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.Evolution;
 import NeuralNetwork.*;
+import NeuralNetwork.Neuron.HiddenNeuron;
+import NeuralNetwork.Neuron.InputNeuron;
+import NeuralNetwork.Neuron.Neuron;
+import NeuralNetwork.Neuron.OutputNeuron;
 import NeuralNetwork.visuals.NetworkVisualization;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class NeuralNetworkTest {
@@ -61,5 +67,22 @@ public class NeuralNetworkTest {
         while (true) {
 
         }
+    }
+
+    @Test
+    public void equals() {
+        NeuralNetwork net = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+        NeuralNetwork net2 = net.deepCopy();
+
+        Assert.assertTrue(net.equals(net2));
+
+        net2 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+
+        Assert.assertFalse(net.equals(net2));
+
+        NeuralNetwork childNet = new ChromosomeCrossOver().crossOver(net, net2);
+
+        Assert.assertFalse(net.equals(childNet));
+        Assert.assertFalse(net2.equals(childNet));
     }
 }

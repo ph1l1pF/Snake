@@ -16,6 +16,17 @@ public abstract class AbstractPlayer {
     private boolean hasLost;
     private int id;
 
+    public void setNumMoves(int numMoves) {
+        this.numMoves = numMoves;
+    }
+
+    public int getNumMoves() {
+
+        return numMoves;
+    }
+
+    private int numMoves = 0;
+
     public AbstractPlayer(Color color, JPanel food, List<JPanel> snake, Set<Point> setPointsUsedBySnake) {
         this.color = color;
         this.snake = snake;

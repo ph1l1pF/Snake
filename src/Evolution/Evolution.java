@@ -7,7 +7,10 @@ import Evolution.Mutation.MutationImpl;
 import Game.NeuralNetworkPlayer;
 import Game.Snake;
 import NeuralNetwork.*;
-import NeuralNetwork.visuals.NetworkVisualization;
+import NeuralNetwork.Neuron.HiddenNeuron;
+import NeuralNetwork.Neuron.InputNeuron;
+import NeuralNetwork.Neuron.Neuron;
+import NeuralNetwork.Neuron.OutputNeuron;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,16 +21,9 @@ import java.util.List;
 
 public class Evolution {
 
-    /**
-     * The probability that some individual will mutate.
-     */
-    private static final double MUTATION_PROBABILITY = 0.1;
+
     private static Evolution instance;
-    /**
-     * The probability that a connection will be changed during mutation
-     */
-    private final double PROBABILITY_CONNECTION_AFFECTED = 0.1;
-    private final int NUM_HIDDEN_NEURONS = 3;
+    private final int NUM_HIDDEN_NEURONS = 1;
     int numGeneration = 0;
     private ICrossOver crossOver = new ChromosomeCrossOver();
     private IMutation mutation = new MutationImpl();
@@ -106,10 +102,10 @@ public class Evolution {
 
         newListPlayers.sort(Comparator.comparing(this::fitness));
 
-        SwingUtilities.invokeLater(() -> {
-            new NetworkVisualization(newListPlayers.get(0).getNetwork(), numGeneration + "");
-        });
-
+//        SwingUtilities.invokeLater(() -> {
+//            new NetworkVisualization(newListPlayers.get(0).getNetwork(), numGeneration + "");
+//        });
+        // System.out.println(newListPlayers.get(0).getNetwork());
 
         List<NeuralNetwork> newPopulation = new ArrayList<>();
 
@@ -117,9 +113,17 @@ public class Evolution {
         for (int i = 0; i < newListPlayers.size() * 0.9; i++) {
             int upperBound = newListPlayers.size() - 1;
             int lowerBound = (int) ((newListPlayers.size() - 1) * 0.8);
-            NeuralNetworkPlayer parent1 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
-            NeuralNetworkPlayer parent2 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
 
+            int rand1 = new Random().nextInt(upperBound - lowerBound) + lowerBound;
+            int rand2 = new Random().nextInt(upperBound - lowerBound) + lowerBound;
+
+            NeuralNetworkPlayer parent1 = newListPlayers.get(rand1);
+            NeuralNetworkPlayer parent2 = newListPlayers.get(rand2);
+
+            if (parent1.getNetwork().equalConnections(parent2.getNetwork())) {
+                i--;
+                continue;
+            }
 
             NeuralNetwork child = crossOver.crossOver(parent1.getNetwork(), parent2.getNetwork());
             newPopulation.add(child);
@@ -148,6 +152,7 @@ public class Evolution {
         Neuron in2 = new InputNeuron("right obstacle");
         Neuron in3 = new InputNeuron("front obstacle");
         Neuron in4 = new InputNeuron("food");
+        Neuron in5 = new InputNeuron("length");
 
         Neuron[] hiddenNeurons = new Neuron[NUM_HIDDEN_NEURONS];
         for (int i = 0; i < hiddenNeurons.length; i++) {
@@ -156,7 +161,7 @@ public class Evolution {
 
         Neuron outputNeuron = new OutputNeuron("output");
 
-        return new Neuron[][]{{in1, in2, in3, in4}, hiddenNeurons, {outputNeuron}};
+        return new Neuron[][]{{in1, in2, in3, in4, in5}, hiddenNeurons, {outputNeuron}};
 
     }
 

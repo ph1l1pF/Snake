@@ -11,7 +11,6 @@ import java.util.Timer;
 
 public class Snake extends JFrame {
 
-    public static boolean testMode = false;
     public static final int SNAKE_PART_SIZE = 15;
     private static final Dimension FRAME_SIZE = new Dimension(SNAKE_PART_SIZE * 80, SNAKE_PART_SIZE * 50);
     private static final int FOOD_SIZE = SNAKE_PART_SIZE;
@@ -30,6 +29,7 @@ public class Snake extends JFrame {
         this.lstPlayers = lstPlayers;
         for (AbstractPlayer player : this.lstPlayers) {
             player.setHasLost(false);
+            player.setNumMoves(0);
             player.getSnake().clear();
         }
 
@@ -84,7 +84,7 @@ public class Snake extends JFrame {
         gameOver = !oneSurvivor;
         if (gameOver) {
             timer.cancel();
-            printStats();
+            //printStats();
             Evolution.getInstance().createNewGeneration(lstPlayers);
         }
     }
@@ -227,6 +227,13 @@ public class Snake extends JFrame {
         if (player.hasLost()) {
             return;
         }
+
+        if (player.getSnake().size() <= 5 && player.getNumMoves() > 1000) {
+            player.setHasLost(true);
+            System.out.println("!!!!!!!!!!!!!");
+        }
+
+        player.setNumMoves(player.getNumMoves() + 1);
 
         final List<JPanel> snake = player.getSnake();
 

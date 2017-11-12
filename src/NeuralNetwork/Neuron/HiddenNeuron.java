@@ -1,4 +1,6 @@
-package NeuralNetwork;
+package NeuralNetwork.Neuron;
+
+import NeuralNetwork.Connection;
 
 public class HiddenNeuron extends Neuron {
 

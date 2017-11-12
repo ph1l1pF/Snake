@@ -1,4 +1,6 @@
-package NeuralNetwork;
+package NeuralNetwork.Neuron;
+
+import NeuralNetwork.Connection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +50,14 @@ public abstract class Neuron {
 
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Neuron) {
+
+            return bias == ((Neuron) obj).bias;
+        }
+        return false;
     }
 }

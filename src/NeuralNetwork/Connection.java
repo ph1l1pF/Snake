@@ -1,5 +1,7 @@
 package NeuralNetwork;
 
+import NeuralNetwork.Neuron.Neuron;
+
 public class Connection {
 
     private Neuron startNeuron;
@@ -31,5 +33,14 @@ public class Connection {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Connection) {
+            Connection otherCon = (Connection) obj;
+            return startNeuron.equals(otherCon.startNeuron) && endNeuron.equals(otherCon.endNeuron) && weight == otherCon.getWeight();
+        }
+        return false;
     }
 }

@@ -77,15 +77,15 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
 
         // left
         outputs[0] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pLeft, new Point(getFood().getX(), getFood().getY())))[0];
+                distanceDifferenceToFood(posHead, pLeft, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
 
         // right
         outputs[1] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pRight, new Point(getFood().getX(), getFood().getY())))[0];
+                distanceDifferenceToFood(posHead, pRight, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
 
         // straight
         outputs[2] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pStraight, new Point(getFood().getX(), getFood().getY())))[0];
+                distanceDifferenceToFood(posHead, pStraight, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
 
         int iMax = 0;
         for (int i = 0; i < outputs.length; i++) {

@@ -1,6 +1,7 @@
 package NeuralNetwork.visuals;
 
 import NeuralNetwork.*;
+import NeuralNetwork.Neuron.Neuron;
 
 import javax.swing.*;
 import java.awt.*;

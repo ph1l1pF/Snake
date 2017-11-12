@@ -1,6 +1,11 @@
 package NeuralNetwork;
 
 
+import NeuralNetwork.Neuron.HiddenNeuron;
+import NeuralNetwork.Neuron.InputNeuron;
+import NeuralNetwork.Neuron.Neuron;
+import NeuralNetwork.Neuron.OutputNeuron;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +112,46 @@ public class NeuralNetwork {
         }
 
         return copy;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NeuralNetwork) {
+            return equalNeurons((NeuralNetwork) obj) && equalConnections((NeuralNetwork) obj);
+        }
+
+        return false;
+    }
+
+    public boolean equalNeurons(NeuralNetwork otherNet) {
+        boolean equal = true;
+        for (int i = 0; i < getNeurons().length; i++) {
+            for (int k = 0; k < getNeurons()[i].length; k++) {
+                if (!neurons[i][k].equals(otherNet.getNeurons()[i][k])) {
+                    equal = false;
+                }
+
+            }
+
+        }
+        return equal;
+    }
+
+    public boolean equalConnections(NeuralNetwork otherNet) {
+        boolean equal = true;
+        for (int i = 0; i < getNeurons().length; i++) {
+            for (int k = 0; k < getNeurons()[i].length; k++) {
+
+                for (int m = 0; m < neurons[i][k].getIngoingConnections().size(); m++) {
+                    if (!neurons[i][k].getIngoingConnections().get(m).equals(otherNet.getNeurons()[i][k].getIngoingConnections().get(m))) {
+                        equal = false;
+                    }
+                }
+
+            }
+
+        }
+        return equal;
     }
 
     public List<Connection> getConnections() {
