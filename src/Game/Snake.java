@@ -2,6 +2,7 @@ package Game;
 
 
 import Evolution.*;
+import NeuralNetwork.NeuralNetwork;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +85,7 @@ public class Snake extends JFrame {
         gameOver = !oneSurvivor;
         if (gameOver) {
             timer.cancel();
-            //printStats();
+            printStats();
             Evolution.getInstance().createNewGeneration(lstPlayers);
         }
     }
@@ -95,6 +96,18 @@ public class Snake extends JFrame {
         System.out.println("Min " + stats[0]);
         System.out.println("Max " + stats[1]);
         System.out.println("Avg " + stats[2]);
+
+
+        int maxLength = 0;
+        NeuralNetwork bestNetwork = null;
+        for (AbstractPlayer player : lstPlayers) {
+            if (player.getSnake().size() > maxLength) {
+                maxLength = player.getSnake().size();
+                bestNetwork = ((NeuralNetworkPlayer) player).getNetwork();
+            }
+        }
+        System.out.println("Best Network:\n");
+        System.out.println(bestNetwork);
         System.out.println("-------------------" + "\n\n");
         Object[] arr = updateTitle();
         String string = "";

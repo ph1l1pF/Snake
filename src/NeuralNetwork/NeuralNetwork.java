@@ -143,7 +143,8 @@ public class NeuralNetwork {
             for (int k = 0; k < getNeurons()[i].length; k++) {
 
                 for (int m = 0; m < neurons[i][k].getIngoingConnections().size(); m++) {
-                    if (!neurons[i][k].getIngoingConnections().get(m).equals(otherNet.getNeurons()[i][k].getIngoingConnections().get(m))) {
+                    if (neurons[i][k].getIngoingConnections().get(m).getWeight() !=
+                            otherNet.getNeurons()[i][k].getIngoingConnections().get(m).getWeight()) {
                         equal = false;
                     }
                 }

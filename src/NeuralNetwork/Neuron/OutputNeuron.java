@@ -7,6 +7,7 @@ public class OutputNeuron extends Neuron {
 
     public OutputNeuron(String label) {
         super(label);
+        setActivatorFunction(new SigmoidActivator());
     }
 
     @Override
@@ -18,13 +19,8 @@ public class OutputNeuron extends Neuron {
                 sum += in.computeOutput() * inCon.getWeight();
             }
         }
-        return manipulate(sum);
+        return getActivatorFunction().activate(sum);
     }
 
 
-    public double manipulate(double value) {
-        // e^x/(1+e^x)
-        double e = Math.exp(value);
-        return e / (1 + e);
-    }
 }

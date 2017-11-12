@@ -10,6 +10,12 @@ public abstract class Neuron {
 
     private String label;
 
+    public void setActivatorFunction(IActivatorFunction activatorFunction) {
+        this.activatorFunction = activatorFunction;
+    }
+
+    private IActivatorFunction activatorFunction;
+
     public void setIngoingConnections(List<Connection> ingoingConnections) {
         this.ingoingConnections = ingoingConnections;
     }
@@ -50,6 +56,10 @@ public abstract class Neuron {
 
     public String getLabel() {
         return label;
+    }
+
+    public IActivatorFunction getActivatorFunction() {
+        return activatorFunction;
     }
 
     @Override

@@ -12,16 +12,12 @@ public class HiddenNeuron extends Neuron {
                 sum += in.computeOutput() * inCon.getWeight();
             }
         }
-        return manipulate(sum);
+        return getActivatorFunction().activate(sum);
     }
 
     public HiddenNeuron(String label) {
         super(label);
+        setActivatorFunction(new SigmoidActivator());
     }
 
-    public double manipulate(double value) {
-        // e^x/(1+e^x)
-        double e = Math.exp(value);
-        return e / (1 + e);
-    }
 }

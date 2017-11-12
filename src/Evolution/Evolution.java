@@ -95,7 +95,7 @@ public class Evolution {
         return lstPlayers;
     }
 
-    private void select(List<NeuralNetworkPlayer> lstPlayers) {
+    private synchronized void select(List<NeuralNetworkPlayer> lstPlayers) {
 
         List<NeuralNetworkPlayer> newListPlayers = new ArrayList<>();
         newListPlayers.addAll(lstPlayers);
@@ -105,7 +105,6 @@ public class Evolution {
 //        SwingUtilities.invokeLater(() -> {
 //            new NetworkVisualization(newListPlayers.get(0).getNetwork(), numGeneration + "");
 //        });
-        // System.out.println(newListPlayers.get(0).getNetwork());
 
         List<NeuralNetwork> newPopulation = new ArrayList<>();
 
@@ -120,11 +119,13 @@ public class Evolution {
             NeuralNetworkPlayer parent1 = newListPlayers.get(rand1);
             NeuralNetworkPlayer parent2 = newListPlayers.get(rand2);
 
+
             if (parent1.getNetwork().equalConnections(parent2.getNetwork())) {
                 i--;
                 continue;
             }
-
+            System.out.println(Thread.currentThread());
+            System.out.println(parent1.equals(parent2));
             NeuralNetwork child = crossOver.crossOver(parent1.getNetwork(), parent2.getNetwork());
             newPopulation.add(child);
         }
