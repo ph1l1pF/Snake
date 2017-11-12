@@ -7,6 +7,7 @@ import Evolution.Mutation.MutationImpl;
 import Game.NeuralNetworkPlayer;
 import Game.Snake;
 import NeuralNetwork.*;
+import NeuralNetwork.visuals.NetworkVisualization;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,6 +105,11 @@ public class Evolution {
         newListPlayers.addAll(lstPlayers);
 
         newListPlayers.sort(Comparator.comparing(this::fitness));
+
+        SwingUtilities.invokeLater(() -> {
+            new NetworkVisualization(newListPlayers.get(0).getNetwork(), numGeneration + "");
+        });
+
 
         List<NeuralNetwork> newPopulation = new ArrayList<>();
 

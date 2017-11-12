@@ -75,11 +75,11 @@ public class NeuralNetwork {
             for (int k = 0; k < getNeurons()[i].length; k++) {
                 Neuron originalNeuron = getNeurons()[i][k];
                 if (originalNeuron instanceof InputNeuron) {
-                    copy.getNeurons()[i][k] = new InputNeuron("copy " + originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new InputNeuron(originalNeuron.getLabel());
                 } else if (originalNeuron instanceof HiddenNeuron) {
-                    copy.getNeurons()[i][k] = new HiddenNeuron("copy " + originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new HiddenNeuron(originalNeuron.getLabel());
                 } else if (originalNeuron instanceof OutputNeuron) {
-                    copy.getNeurons()[i][k] = new OutputNeuron("copy " + originalNeuron.getLabel());
+                    copy.getNeurons()[i][k] = new OutputNeuron(originalNeuron.getLabel());
                 }
                 copy.getNeurons()[i][k].setBias(originalNeuron.getBias());
 

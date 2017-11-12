@@ -38,6 +38,11 @@ public class NetworkVisualization extends JFrame {
                 for (int m = 0; m < neuralNetwork.getNeurons()[i][k].getIngoingConnections().size(); m++) {
                     g2.drawString(String.valueOf(neuralNetwork.getNeurons()[i][k].getIngoingConnections().get(m).getWeight()), x, y + m * 10);
                 }
+
+                if (i == 0) {
+                    g2.drawString(neuralNetwork.getNeurons()[i][k].getLabel(), x, y);
+                }
+
                 map.put(neuralNetwork.getNeurons()[i][k], new Point(x, y + 10));
             }
         }
