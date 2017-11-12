@@ -20,7 +20,7 @@ public class ChromosomeCrossOver implements ICrossOver {
                         child.getNeurons()[i][k].setBias(parent1.getNeurons()[i][k].getBias());
                     } else {
                         child.getNeurons()[i][k].getIngoingConnections().get(m).
-                                setWeight(parent1.getNeurons()[i][k].getIngoingConnections().get(m).getWeight());
+                                setWeight(parent2.getNeurons()[i][k].getIngoingConnections().get(m).getWeight());
                         child.getNeurons()[i][k].setBias(parent2.getNeurons()[i][k].getBias());
                     }
                 }

@@ -2,6 +2,8 @@ package Evolution;
 
 import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.CrossOver.ICrossOver;
+import Evolution.Mutation.IMutation;
+import Evolution.Mutation.MutationImpl;
 import Game.NeuralNetworkPlayer;
 import Game.Snake;
 import NeuralNetwork.*;
@@ -27,6 +29,7 @@ public class Evolution {
     private final int NUM_HIDDEN_NEURONS = 3;
     int numGeneration = 0;
     private ICrossOver crossOver = new ChromosomeCrossOver();
+    private IMutation mutation = new MutationImpl();
     private int currentGenerationNumber = -1;
     private volatile boolean alreadyDone = false;
     private Snake snakeGame;
@@ -111,6 +114,8 @@ public class Evolution {
             NeuralNetworkPlayer parent1 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
             NeuralNetworkPlayer parent2 = newListPlayers.get(new Random().nextInt(upperBound - lowerBound) + lowerBound);
 
+            System.out.println(fitness(parent1) + " und " + fitness(parent2));
+
             NeuralNetwork child = crossOver.crossOver(parent1.getNetwork(), parent2.getNetwork());
             newPopulation.add(child);
         }
@@ -159,21 +164,9 @@ public class Evolution {
 
 
     private void mutate(List<NeuralNetworkPlayer> lstPlayers) {
-        Random random = new Random();
         for (NeuralNetworkPlayer player : lstPlayers) {
-            for (Connection connection : player.getNetwork().getConnections()) {
-                if (random.nextDouble() <= PROBABILITY_CONNECTION_AFFECTED) {
-                    double manipulationValue = random.nextDouble();
-                    if (random.nextBoolean()) {
-                        manipulationValue /= 1;
-                    }
-                    connection.setWeight(connection.getWeight() * manipulationValue);
-                }
-            }
-
+            mutation.mutate(player.getNetwork());
         }
-
-
     }
 
 }

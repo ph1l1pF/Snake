@@ -1,11 +1,12 @@
 package NeuralNetwork;
 
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NeuralNetwork implements Cloneable {
+public class NeuralNetwork {
 
     private Neuron[][] neurons;
     private List<Connection> connections = new ArrayList<>();
@@ -44,9 +45,67 @@ public class NeuralNetwork implements Cloneable {
                 for (int l = 0; l < neurons[i - 1].length; l++) {
                     Connection con = new Connection(neurons[i - 1][l], neurons[i][k], new Random().nextDouble());
                     neurons[i][k].getIngoingConnections().add(con);
+                    connections.add(con);
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+
+        String result = "";
+        for (int i = 1; i < neurons.length; i++) {
+            for (int k = 0; k < neurons[i].length; k++) {
+                for (Connection connection : neurons[i][k].getIngoingConnections()) {
+                    result += connection.toString() + "\n";
+                }
+            }
+        }
+        return result;
+    }
+
+    public NeuralNetwork deepCopy() {
+        NeuralNetwork copy = new NeuralNetwork(new Neuron[getNeurons().length][getNeurons()[0].length]);
+        for (int i = 0; i < neurons.length; i++) {
+            copy.neurons[i] = new Neuron[neurons[i].length];
+        }
+
+        for (int i = 0; i < getNeurons().length; i++) {
+            for (int k = 0; k < getNeurons()[i].length; k++) {
+                Neuron originalNeuron = getNeurons()[i][k];
+                Neuron copyNeuron = copy.getNeurons()[i][k];
+                if (originalNeuron instanceof InputNeuron) {
+                    copy.getNeurons()[i][k] = new InputNeuron(originalNeuron.getLabel());
+                } else if (originalNeuron instanceof HiddenNeuron) {
+                    copy.getNeurons()[i][k] = new HiddenNeuron(originalNeuron.getLabel());
+                } else if (originalNeuron instanceof OutputNeuron) {
+                    copy.getNeurons()[i][k] = new OutputNeuron(originalNeuron.getLabel());
+                }
+                copy.getNeurons()[i][k].setBias(originalNeuron.getBias());
+
+
+            }
+        }
+
+        for (Connection connection : connections) {
+            Point start = null, end = null;
+            Connection currentCon = null;
+            for (int i = 0; i < getNeurons().length; i++) {
+                for (int k = 0; k < getNeurons()[i].length; k++) {
+                    if (connection.getStartNeuron().equals(getNeurons()[i][k])) {
+                        start = new Point(i, k);
+                    } else if (connection.getEndNeuron().equals(getNeurons()[i][k])) {
+                        end = new Point(i, k);
+                        currentCon = connection;
+                    }
+                }
+            }
+            copy.neurons[end.x][end.y].addIngoingConnection(currentCon);
+            copy.connections.add(new Connection(neurons[start.x][start.y], neurons[end.x][end.y], currentCon.getWeight()));
+        }
+
+        return copy;
     }
 
     public List<Connection> getConnections() {

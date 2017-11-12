@@ -45,4 +45,8 @@ public abstract class Neuron {
     public void setBias(double bias) {
         this.bias = bias;
     }
+
+    public String getLabel() {
+        return label;
+    }
 }

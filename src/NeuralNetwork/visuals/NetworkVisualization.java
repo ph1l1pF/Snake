@@ -36,7 +36,7 @@ public class NetworkVisualization extends JFrame {
                 int y = k * (10 + 60) + offset;
                 g2.draw(new Ellipse2D.Double(x, y, 10, 10));
                 for (int m = 0; m < neuralNetwork.getNeurons()[i][k].getIngoingConnections().size(); m++) {
-                    g2.drawString(String.valueOf(neuralNetwork.getNeurons()[i][k].getIngoingConnections().get(m).getWeight()), x, y + m * 5);
+                    g2.drawString(String.valueOf(neuralNetwork.getNeurons()[i][k].getIngoingConnections().get(m).getWeight()), x, y + m * 10);
                 }
                 map.put(neuralNetwork.getNeurons()[i][k], new Point(x, y + 10));
             }
@@ -56,28 +56,5 @@ public class NetworkVisualization extends JFrame {
         setLayout(null);
         neuralNetwork = network;
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        Neuron in1 = new InputNeuron("left obstacle");
-        Neuron in2 = new InputNeuron("right obstacle");
-        Neuron in3 = new InputNeuron("front obstacle");
-
-        Neuron[] hiddenNeurons = new Neuron[10];
-        for (int i = 0; i < hiddenNeurons.length; i++) {
-            hiddenNeurons[i] = new HiddenNeuron("hidden " + i);
-        }
-
-        Neuron outputNeuron = new OutputNeuron("output");
-
-        Neuron[][] neurons = {{in1, in2, in3}, hiddenNeurons, {outputNeuron}};
-
-        NeuralNetwork network = new NeuralNetwork(neurons);
-        network.generateFullmesh();
-        new NetworkVisualization(network, "bla");
-
-        for (double d :
-                network.computeOutputs(0, 0, 0))
-            System.out.println(d);
     }
 }

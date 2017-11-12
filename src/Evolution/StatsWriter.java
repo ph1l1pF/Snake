@@ -19,9 +19,9 @@ public class StatsWriter {
                 Files.createFile(path);
             }
             if (firstWrite) {
-                List<String> bla = new ArrayList<>();
-                bla.add("min,max,avg,gen");
-                Files.write(path, bla);
+                List<String> headLine = new ArrayList<>();
+                headLine.add("min, max, avg, gen");
+                Files.write(path, headLine);
                 firstWrite = false;
             }
             Files.write(path, lines, StandardOpenOption.APPEND);

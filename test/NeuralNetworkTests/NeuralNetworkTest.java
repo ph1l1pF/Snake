@@ -1,6 +1,8 @@
 package NeuralNetworkTests;
 
+import Evolution.Evolution;
 import NeuralNetwork.*;
+import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Test;
 
 public class NeuralNetworkTest {
@@ -38,7 +40,26 @@ public class NeuralNetworkTest {
     }
 
     @Test
+    public void deepCopy() {
+        NeuralNetwork network = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+        new NetworkVisualization(network, "original");
+        new NetworkVisualization(network.deepCopy(), "copy");
+
+        while (true) {
+        }
+    }
+
+    @Test
     public void getConnections() throws Exception {
     }
 
+    @Test
+    public void visualize() {
+        NeuralNetwork network = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+        new NetworkVisualization(network, "net");
+
+        while (true) {
+
+        }
+    }
 }

@@ -2,6 +2,7 @@ package EvolutionTests;
 
 import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.Evolution;
+import Evolution.Mutation.MutationImpl;
 import NeuralNetwork.*;
 import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Before;
@@ -26,14 +27,26 @@ public class EvolutionTest {
     }
 
     @Test
+    public void mutate() {
+        NeuralNetwork network = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+
+        new NetworkVisualization(network, "before");
+        new NetworkVisualization(new MutationImpl().mutate(network), "after");
+
+        while (true) {
+        }
+    }
+
+    @Test
     public void crossOver() {
         NeuralNetwork net1 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
         NeuralNetwork net2 = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
 
         NeuralNetwork child = new ChromosomeCrossOver().crossOver(net1, net2);
-        new NetworkVisualization(net1, "net1");
-        new NetworkVisualization(net2, "net2");
-        new NetworkVisualization(child, "child");
+
+        System.out.println(net1.toString() + "\n ----------------");
+        System.out.println(net2.toString() + "\n ----------------");
+        System.out.println(child.toString() + "\n ----------------");
     }
 
 }
