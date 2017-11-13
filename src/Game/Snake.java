@@ -243,7 +243,6 @@ public class Snake extends JFrame {
 
         if (player.getSnake().size() <= 5 && player.getNumMoves() > 1000) {
             player.setHasLost(true);
-            System.out.println("!!!!!!!!!!!!!");
         }
 
         player.setNumMoves(player.getNumMoves() + 1);

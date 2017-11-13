@@ -2,6 +2,8 @@ package NeuralNetwork;
 
 import NeuralNetwork.Neuron.Neuron;
 
+import java.util.Random;
+
 public class Connection {
 
     private Neuron startNeuron;
@@ -12,6 +14,10 @@ public class Connection {
         this.startNeuron = startNeuron;
         this.endNeuron = endNeuron;
         this.weight = weight;
+    }
+
+    public Connection(Neuron startNeuron, Neuron endNeuron) {
+        this(startNeuron, endNeuron, randomWeight());
     }
 
     @Override
@@ -42,5 +48,14 @@ public class Connection {
             return startNeuron.equals(otherCon.startNeuron) && endNeuron.equals(otherCon.endNeuron) && weight == otherCon.getWeight();
         }
         return false;
+    }
+
+    public static double randomWeight() {
+        Random random = new Random();
+        double d = random.nextDouble();
+        if (random.nextBoolean()) {
+            d *= -1;
+        }
+        return d;
     }
 }

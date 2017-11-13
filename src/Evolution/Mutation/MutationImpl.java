@@ -23,7 +23,7 @@ public class MutationImpl implements IMutation {
             for (int k = 0; k < newNetwork.getNeurons()[i].length; k++) {
                 for (Connection connection : newNetwork.getNeurons()[i][k].getIngoingConnections()) {
                     if (random.nextDouble() <= PROBABILITY_CONNECTION_AFFECTED) {
-                        double manipulationValue = random.nextDouble();
+                        double manipulationValue = Connection.randomWeight();
                         if (random.nextBoolean()) {
                             manipulationValue /= 1.0;
                         }

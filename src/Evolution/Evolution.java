@@ -120,12 +120,11 @@ public class Evolution {
             NeuralNetworkPlayer parent2 = newListPlayers.get(rand2);
 
 
-            if (parent1.getNetwork().equalConnections(parent2.getNetwork())) {
+            if (parent1.getNetwork().equalConnections(parent2.getNetwork()) || parent1.equals(parent2)) {
                 i--;
                 continue;
             }
-            System.out.println(Thread.currentThread());
-            System.out.println(parent1.equals(parent2));
+            //todo sometimes nets are equal
             NeuralNetwork child = crossOver.crossOver(parent1.getNetwork(), parent2.getNetwork());
             newPopulation.add(child);
         }

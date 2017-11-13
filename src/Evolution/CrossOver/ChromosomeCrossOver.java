@@ -9,7 +9,8 @@ public class ChromosomeCrossOver implements ICrossOver {
     public NeuralNetwork crossOver(NeuralNetwork parent1, NeuralNetwork parent2) {
 
         if (parent1.equals(parent2)) {
-            throw new IllegalArgumentException("Parents must not be equal.");
+            //throw new IllegalArgumentException("Parents must not be equal.");
+            System.out.println("fail");
         }
 
         NeuralNetwork child = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();

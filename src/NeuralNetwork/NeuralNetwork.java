@@ -9,7 +9,6 @@ import NeuralNetwork.Neuron.OutputNeuron;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class NeuralNetwork {
 
@@ -48,7 +47,7 @@ public class NeuralNetwork {
         for (int i = 1; i < neurons.length; i++) {
             for (int k = 0; k < neurons[i].length; k++) {
                 for (int l = 0; l < neurons[i - 1].length; l++) {
-                    Connection con = new Connection(neurons[i - 1][l], neurons[i][k], new Random().nextDouble());
+                    Connection con = new Connection(neurons[i - 1][l], neurons[i][k]);
                     neurons[i][k].getIngoingConnections().add(con);
                     connections.add(con);
                 }
