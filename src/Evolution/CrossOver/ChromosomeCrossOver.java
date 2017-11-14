@@ -8,6 +8,11 @@ public class ChromosomeCrossOver implements ICrossOver {
     @Override
     public NeuralNetwork crossOver(NeuralNetwork parent1, NeuralNetwork parent2) {
 
+        System.out.println("Crossing:\nParent1");
+        System.out.println(parent1.toStringConnections());
+        System.out.println("\nParent2");
+        System.out.println(parent2.toStringConnections());
+
         if (parent1.equals(parent2)) {
             //throw new IllegalArgumentException("Parents must not be equal.");
             System.out.println("fail");
@@ -31,6 +36,10 @@ public class ChromosomeCrossOver implements ICrossOver {
                 }
             }
         }
+
+        System.out.println("\nchild");
+        System.out.println(child.toStringConnections());
+
         return child;
     }
 }

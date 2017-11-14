@@ -2,9 +2,9 @@ package NeuralNetwork;
 
 import NeuralNetwork.Neuron.Neuron;
 
-import java.util.Random;
+import java.io.Serializable;
 
-public class Connection {
+public class Connection implements Serializable {
 
     private Neuron startNeuron;
     private Neuron endNeuron;
@@ -17,7 +17,7 @@ public class Connection {
     }
 
     public Connection(Neuron startNeuron, Neuron endNeuron) {
-        this(startNeuron, endNeuron, randomWeight());
+        this(startNeuron, endNeuron, MathUtil.randomMinusOneToOne());
     }
 
     @Override
@@ -50,12 +50,4 @@ public class Connection {
         return false;
     }
 
-    public static double randomWeight() {
-        Random random = new Random();
-        double d = random.nextDouble();
-        if (random.nextBoolean()) {
-            d *= -1;
-        }
-        return d;
-    }
 }

@@ -17,7 +17,7 @@ public class HiddenNeuron extends Neuron {
 
     public HiddenNeuron(String label) {
         super(label);
-        setActivatorFunction(new SigmoidActivator());
+        setActivatorFunction(new IdentityActivatorFunction());
     }
 
 }

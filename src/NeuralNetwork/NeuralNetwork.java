@@ -7,10 +7,11 @@ import NeuralNetwork.Neuron.Neuron;
 import NeuralNetwork.Neuron.OutputNeuron;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeuralNetwork {
+public class NeuralNetwork implements Serializable {
 
     private Neuron[][] neurons;
     private List<Connection> connections = new ArrayList<>();
@@ -27,7 +28,7 @@ public class NeuralNetwork {
         this.neurons = neurons;
     }
 
-    public double[] computeOutputs(int... inputValues) {
+    public double[] computeOutputs(double... inputValues) {
 
         for (int i = 0; i < neurons[0].length; i++) {
             ((InputNeuron) neurons[0][i]).setInput(inputValues[i]);
@@ -55,9 +56,7 @@ public class NeuralNetwork {
         }
     }
 
-    @Override
-    public String toString() {
-
+    public String toStringConnections() {
         String result = "";
         for (int i = 1; i < neurons.length; i++) {
             for (int k = 0; k < neurons[i].length; k++) {
@@ -67,6 +66,25 @@ public class NeuralNetwork {
             }
         }
         return result;
+    }
+
+    public String toStringBiases() {
+        String result = "\n\n Neurons with biases: \n";
+
+        for (int i = 0; i < neurons.length; i++) {
+            for (int k = 0; k < neurons[i].length; k++) {
+                result += neurons[i][k].toString() + ": " + neurons[i][k].getBias() + "\n";
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return toStringConnections() + toStringBiases();
+
+
     }
 
     public NeuralNetwork deepCopy() {
@@ -104,8 +122,12 @@ public class NeuralNetwork {
                     }
                 }
             }
-
-            Connection copyCon = new Connection(copy.neurons[start.x][start.y], copy.neurons[end.x][end.y], currentCon.getWeight());
+            Connection copyCon = null;
+            try {
+                copyCon = new Connection(copy.neurons[start.x][start.y], copy.neurons[end.x][end.y], currentCon.getWeight());
+            } catch (NullPointerException e) {
+                System.out.println();
+            }
             copy.neurons[end.x][end.y].addIngoingConnection(copyCon);
             copy.connections.add(copyCon);
         }

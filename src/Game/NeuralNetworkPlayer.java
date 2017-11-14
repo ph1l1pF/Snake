@@ -1,5 +1,6 @@
 package Game;
 
+import Evolution.Evolution;
 import NeuralNetwork.NeuralNetwork;
 
 import javax.swing.*;
@@ -8,6 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 public class NeuralNetworkPlayer extends AbstractPlayer {
+
+    private int valueFoodAvaible = 1;
+    private int valueObstacleInWay = -10;
 
     public NeuralNetwork getNetwork() {
         return network;
@@ -41,31 +45,31 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
 
 
             if (new Point(snakePart.getX(), snakePart.getY()).equals(posFront)) {
-                obstacleFront = -1;
+                obstacleFront = valueObstacleInWay;
             }
 
             if (new Point(snakePart.getX(), snakePart.getY()).equals(posLeft)) {
-                obstacleLeft = -1;
+                obstacleLeft = valueObstacleInWay;
             } else if (new Point(getFood().getX(), getFood().getY()).equals(new Point(snakePart.getX(), snakePart.getY()))) {
-                obstacleFront = -1;
+                obstacleFront = valueObstacleInWay;
             }
 
 
             if (new Point(snakePart.getX(), snakePart.getY()).equals(posRight)) {
-                obstacleRight = -1;
+                obstacleRight = valueObstacleInWay;
             }
 
         }
 
         // check where food is...
         if (new Point(getFood().getX(), getFood().getY()).equals(posFront)) {
-            obstacleFront = 1;
+            obstacleFront = valueFoodAvaible;
         }
         if (new Point(getFood().getX(), getFood().getY()).equals(posLeft)) {
-            obstacleLeft = 1;
+            obstacleLeft = valueFoodAvaible;
         }
         if (new Point(getFood().getX(), getFood().getY()).equals(posRight)) {
-            obstacleRight = 1;
+            obstacleRight = valueFoodAvaible;
         }
 
         // food distance difference
@@ -75,17 +79,19 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
 
         double[] outputs = new double[3];
 
+        double inverseSnakeLength = 1.0 / getSnake().size();
+
         // left
         outputs[0] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pLeft, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
+                distanceDifferenceToFood(posHead, pLeft, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
 
         // right
         outputs[1] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pRight, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
+                distanceDifferenceToFood(posHead, pRight, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
 
         // straight
         outputs[2] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pStraight, new Point(getFood().getX(), getFood().getY())), getSnake().size())[0];
+                distanceDifferenceToFood(posHead, pStraight, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
 
         int iMax = 0;
         for (int i = 0; i < outputs.length; i++) {
@@ -109,6 +115,19 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
                 break;
         }
         setDirection(currentDirection);
+
+        //test
+        if (getSnake().size() > 30 && Evolution.getInstance().getCurrentGenerationNumber() > 2) {
+            if (obstacleLeft == -1 && iMax == 0) {
+                System.out.println("hindernis links " + obstacleLeft);
+                System.out.println("hindernis rechts " + obstacleRight);
+                System.out.println("hindernis vorn " + obstacleFront);
+
+                System.out.println("output links " + outputs[0]);
+                System.out.println("output rechts " + outputs[1]);
+                System.out.println("output gerade " + outputs[2]);
+            }
+        }
     }
 
     private int distanceDifferenceToFood(Point oldPos, Point newPos, Point posFood) {

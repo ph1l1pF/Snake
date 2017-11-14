@@ -2,14 +2,14 @@ package NeuralNetworkTests;
 
 import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.Evolution;
-import NeuralNetwork.*;
-import NeuralNetwork.Neuron.HiddenNeuron;
-import NeuralNetwork.Neuron.InputNeuron;
-import NeuralNetwork.Neuron.Neuron;
-import NeuralNetwork.Neuron.OutputNeuron;
+import NeuralNetwork.NeuralNetwork;
 import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class NeuralNetworkTest {
 
@@ -27,16 +27,40 @@ public class NeuralNetworkTest {
 
     @Test
     public void computeOutputs() throws Exception {
-        Neuron n = new InputNeuron("in");
-        Neuron nOut = new OutputNeuron("out");
-        Neuron[] hiddens = new Neuron[10];
-        for(int i = 0;i<hiddens.length;i++){
-            hiddens[i] = new HiddenNeuron("");
-        }
-        NeuralNetwork network = new NeuralNetwork(new Neuron[][]{{n}, hiddens,{nOut}});
 
-        network.generateFullmesh();
-        double output = network.computeOutputs(0)[0];
+        /*NeuralNetwork network = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream("net.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(network);
+            out.close();
+            fileOut.close();
+            System.out.printf("Serialized data");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }*/
+
+        NeuralNetwork net = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("net.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            net = (NeuralNetwork) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+            return;
+        } catch (ClassNotFoundException c) {
+            c.printStackTrace();
+            return;
+        }
+
+        net.getNeurons()[2][0].setBias(0.4);
+
+        System.out.println(net);
+
+        double output = net.computeOutputs(-1, 0, 0, -1, 1.0 / 20)[0];
 
         System.out.println(output);
     }
@@ -57,6 +81,7 @@ public class NeuralNetworkTest {
 
     @Test
     public void getConnections() throws Exception {
+
     }
 
     @Test

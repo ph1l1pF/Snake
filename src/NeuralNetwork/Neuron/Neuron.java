@@ -1,40 +1,32 @@
 package NeuralNetwork.Neuron;
 
 import NeuralNetwork.Connection;
+import NeuralNetwork.MathUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public abstract class Neuron {
+public abstract class Neuron implements Serializable {
 
     private String label;
-
-    public void setActivatorFunction(IActivatorFunction activatorFunction) {
-        this.activatorFunction = activatorFunction;
-    }
-
     private IActivatorFunction activatorFunction;
-
-    public void setIngoingConnections(List<Connection> ingoingConnections) {
-        this.ingoingConnections = ingoingConnections;
-    }
-
     private List<Connection> ingoingConnections = new ArrayList<>();
-
     private double bias;
 
     public Neuron(String label) {
         this.label = label;
-        this.bias = new Random().nextDouble();
+        this.bias = MathUtil.randomMinusOneToOne();
     }
-
 
     public abstract double computeOutput();
 
-
     public List<Connection> getIngoingConnections() {
         return ingoingConnections;
+    }
+
+    public void setIngoingConnections(List<Connection> ingoingConnections) {
+        this.ingoingConnections = ingoingConnections;
     }
 
     public void addIngoingConnection(Connection connection) {
@@ -60,6 +52,10 @@ public abstract class Neuron {
 
     public IActivatorFunction getActivatorFunction() {
         return activatorFunction;
+    }
+
+    public void setActivatorFunction(IActivatorFunction activatorFunction) {
+        this.activatorFunction = activatorFunction;
     }
 
     @Override

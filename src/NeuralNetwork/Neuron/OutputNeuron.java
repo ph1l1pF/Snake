@@ -7,7 +7,7 @@ public class OutputNeuron extends Neuron {
 
     public OutputNeuron(String label) {
         super(label);
-        setActivatorFunction(new SigmoidActivator());
+        setActivatorFunction(new IdentityActivatorFunction());
     }
 
     @Override
