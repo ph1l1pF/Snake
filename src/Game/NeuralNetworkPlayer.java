@@ -10,8 +10,8 @@ import java.util.Set;
 
 public class NeuralNetworkPlayer extends AbstractPlayer {
 
-    private int valueFoodAvaible = 1;
-    private int valueObstacleInWay = -10;
+    private final int valueFoodAvaible = 1;
+    private final int valueObstacleInWay = -1;
 
     public NeuralNetwork getNetwork() {
         return network;
@@ -25,7 +25,7 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
     }
 
     @Override
-    public void makeMove() {
+    public synchronized void makeMove() {
         Point posHead = getSnake().get(0).getLocation();
         int obstacleLeft = 0, obstacleRight = 0, obstacleFront = 0;
         Snake.Direction currentDirection = getDirection();
@@ -42,56 +42,58 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
         // check for other parts of snake...
         for (int i = 2; i < getSnake().size(); i++) {
             JPanel snakePart = getSnake().get(i);
+            Point posOtherSnakePart = new Point(snakePart.getX(), snakePart.getY());
 
-
-            if (new Point(snakePart.getX(), snakePart.getY()).equals(posFront)) {
+            if (posOtherSnakePart.equals(posFront)) {
                 obstacleFront = valueObstacleInWay;
-            }
-
-            if (new Point(snakePart.getX(), snakePart.getY()).equals(posLeft)) {
+            } else if (posOtherSnakePart.equals(posLeft)) {
                 obstacleLeft = valueObstacleInWay;
-            } else if (new Point(getFood().getX(), getFood().getY()).equals(new Point(snakePart.getX(), snakePart.getY()))) {
-                obstacleFront = valueObstacleInWay;
-            }
-
-
-            if (new Point(snakePart.getX(), snakePart.getY()).equals(posRight)) {
+            } else if (posOtherSnakePart.equals(posRight)) {
                 obstacleRight = valueObstacleInWay;
             }
 
         }
 
         // check where food is...
-        if (new Point(getFood().getX(), getFood().getY()).equals(posFront)) {
+        Point posFood = new Point(getFood().getX(), getFood().getY());
+        if (posFood.equals(posFront)) {
             obstacleFront = valueFoodAvaible;
         }
-        if (new Point(getFood().getX(), getFood().getY()).equals(posLeft)) {
+        if (posFood.equals(posLeft)) {
             obstacleLeft = valueFoodAvaible;
         }
-        if (new Point(getFood().getX(), getFood().getY()).equals(posRight)) {
+        if (posFood.equals(posRight)) {
             obstacleRight = valueFoodAvaible;
         }
 
-        // food distance difference
-        Point pLeft = Snake.Direction.getPointAfterMoving(Snake.Direction.getRelativeLeft(currentDirection), posHead);
-        Point pRight = Snake.Direction.getPointAfterMoving(Snake.Direction.getRelativeRight(currentDirection), posHead);
-        Point pStraight = Snake.Direction.getPointAfterMoving(currentDirection, posHead);
 
         double[] outputs = new double[3];
 
-        double inverseSnakeLength = 1.0 / getSnake().size();
-
+        double inverseSnakeLength = -1 * getSnake().size();
         // left
+        int distDiff = distanceDifferenceToFood(posHead, posLeft, posFood);
         outputs[0] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pLeft, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
+                distDiff, inverseSnakeLength)[0];
+
+        printInput(obstacleLeft, obstacleRight, obstacleFront,
+                distDiff, inverseSnakeLength, "left");
+        printOutput(outputs[0]);
 
         // right
+        distDiff = distanceDifferenceToFood(posHead, posRight, posFood);
         outputs[1] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pRight, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
+                distDiff, inverseSnakeLength)[0];
+        printInput(obstacleLeft, obstacleRight, obstacleFront,
+                distDiff, inverseSnakeLength, "right");
+        printOutput(outputs[0]);
 
         // straight
+        distDiff = distanceDifferenceToFood(posHead, posFront, posFood);
         outputs[2] = network.computeOutputs(obstacleLeft, obstacleRight, obstacleFront,
-                distanceDifferenceToFood(posHead, pStraight, new Point(getFood().getX(), getFood().getY())), inverseSnakeLength)[0];
+                distDiff, inverseSnakeLength)[0];
+        printInput(obstacleLeft, obstacleRight, obstacleFront,
+                distDiff, inverseSnakeLength, "front");
+        printOutput(outputs[0]);
 
         int iMax = 0;
         for (int i = 0; i < outputs.length; i++) {
@@ -104,7 +106,6 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
             case 0:
                 // turn relative left
                 currentDirection = Snake.Direction.getRelativeLeft(currentDirection);
-
                 break;
             case 1:
                 // turn relative right
@@ -130,10 +131,21 @@ public class NeuralNetworkPlayer extends AbstractPlayer {
         }
     }
 
+    private void printOutput(double output) {
+        System.out.println("output=" + output);
+    }
+
+    private void printInput(int obstacleLeft, int obstacleRight, int obstacleFront, int distDiff, double inverseSnakeLength, String dir) {
+
+        System.out.println("inputs for " + dir + "\n: obstacleLeft=" + obstacleLeft + ", obstacleRight=" + obstacleRight + ", obstacleFront=" + obstacleFront
+                + ", distance Difference=" + distDiff + ", inverseSnakeLength=" + inverseSnakeLength);
+    }
+
     private int distanceDifferenceToFood(Point oldPos, Point newPos, Point posFood) {
         int diffOld = manhattanDistance(oldPos, posFood);
         int diffNew = manhattanDistance(newPos, posFood);
-        return diffOld - diffNew;
+        int distDiff = (diffOld - diffNew) / Snake.SNAKE_PART_SIZE;
+        return distDiff;
     }
 
     private int manhattanDistance(Point p1, Point p2) {

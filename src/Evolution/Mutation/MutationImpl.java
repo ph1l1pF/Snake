@@ -19,8 +19,8 @@ public class MutationImpl implements IMutation {
     public NeuralNetwork mutate(NeuralNetwork newNetwork) {
         //NeuralNetwork newNetwork = network.deepCopy();
 
-        System.out.println("mutation anfang ");
-        System.out.println(newNetwork.toStringConnections());
+        //System.out.println("mutation anfang ");
+        //System.out.println(newNetwork.toStringConnections());
 
         Random random = new Random();
 
@@ -38,8 +38,8 @@ public class MutationImpl implements IMutation {
             }
         }
 
-        System.out.println("mutation ende ");
-        System.out.println(newNetwork.toStringConnections());
+        //System.out.println("mutation ende ");
+        //System.out.println(newNetwork.toStringConnections());
 
         return newNetwork;
     }

@@ -7,10 +7,6 @@ import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 public class NeuralNetworkTest {
 
     @Test
@@ -39,7 +35,7 @@ public class NeuralNetworkTest {
             System.out.printf("Serialized data");
         } catch (IOException i) {
             i.printStackTrace();
-        }*/
+        }
 
         NeuralNetwork net = null;
         try {
@@ -54,9 +50,9 @@ public class NeuralNetworkTest {
         } catch (ClassNotFoundException c) {
             c.printStackTrace();
             return;
-        }
+        }*/
 
-        net.getNeurons()[2][0].setBias(0.4);
+        NeuralNetwork net = Evolution.getInstance().generateRandomFullmeshNeuralNetwork();
 
         System.out.println(net);
 

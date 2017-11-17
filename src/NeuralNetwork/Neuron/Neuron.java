@@ -1,7 +1,6 @@
 package NeuralNetwork.Neuron;
 
 import NeuralNetwork.Connection;
-import NeuralNetwork.MathUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,12 +13,20 @@ public abstract class Neuron implements Serializable {
     private List<Connection> ingoingConnections = new ArrayList<>();
     private double bias;
 
-    public Neuron(String label) {
-        this.label = label;
-        this.bias = MathUtil.randomMinusOneToOne();
+    public double getValue() {
+        return value;
     }
 
-    public abstract double computeOutput();
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    private double value;
+
+    public Neuron(String label) {
+        this.label = label;
+        this.bias = -5;
+    }
 
     public List<Connection> getIngoingConnections() {
         return ingoingConnections;

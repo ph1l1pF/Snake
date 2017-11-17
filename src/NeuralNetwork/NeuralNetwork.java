@@ -31,13 +31,35 @@ public class NeuralNetwork implements Serializable {
     public double[] computeOutputs(double... inputValues) {
 
         for (int i = 0; i < neurons[0].length; i++) {
-            ((InputNeuron) neurons[0][i]).setInput(inputValues[i]);
+            neurons[0][i].setValue(inputValues[i]);
         }
 
         double[] output = new double[neurons[neurons.length - 1].length];
 
-        for (int i = 0; i < neurons[neurons.length - 1].length; i++) {
-            output[i] = neurons[neurons.length - 1][i].computeOutput();
+        for (int i = 1; i < neurons.length; i++) {
+            for (int k = 0; k < neurons[i].length; k++) {
+                Neuron currentNeuron = neurons[i][k];
+                for (Connection connection : currentNeuron.getIngoingConnections()) {
+                    Neuron neuronIngoing = connection.getStartNeuron();
+
+                    if (neuronIngoing.getValue() > neuronIngoing.getBias()) {
+                        currentNeuron.setValue(currentNeuron.getValue() +
+                                neuronIngoing.getValue() * connection.getWeight());
+                    }
+                }
+
+                if (i == neurons.length - 1) {
+                    if (currentNeuron.getValue() > currentNeuron.getBias()) {
+                        output[k] = currentNeuron.getValue();
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < neurons.length; i++) {
+            for (int k = 0; k < neurons[i].length; k++) {
+                neurons[i][k].setValue(0);
+            }
         }
 
         return output;

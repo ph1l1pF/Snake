@@ -55,9 +55,10 @@ public class Evolution {
             lstPlayers = createNeuralNetworkPlayers(30);
         }
         if (snakeGame != null) {
-            snakeGame.setVisible(false);
-            snakeGame.dispatchEvent(new WindowEvent(snakeGame, WindowEvent.WINDOW_CLOSING));
-            // snakeGame.getContentPane().removeAll();
+            SwingUtilities.invokeLater(() -> {
+                snakeGame.setVisible(false);
+                snakeGame.dispatchEvent(new WindowEvent(snakeGame, WindowEvent.WINDOW_CLOSING));
+            });
             numGeneration++;
         }
         currentGenerationNumber++;
@@ -102,14 +103,10 @@ public class Evolution {
 
         newListPlayers.sort(Comparator.comparing(this::fitness));
 
-//        SwingUtilities.invokeLater(() -> {
-//            new NetworkVisualization(newListPlayers.get(0).getNetwork(), numGeneration + "");
-//        });
-
         List<NeuralNetwork> newPopulation = new ArrayList<>();
 
         // 80% of new population must consist of best exemplars by crossing all of them
-        for (int i = 0; i < newListPlayers.size() * 0.9; i++) {
+        for (int i = 0; i < newListPlayers.size() * 0.5; i++) {
             int upperBound = newListPlayers.size() - 1;
             int lowerBound = (int) ((newListPlayers.size() - 1) * 0.8);
 

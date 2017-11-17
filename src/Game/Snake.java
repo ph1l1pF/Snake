@@ -15,7 +15,7 @@ public class Snake extends JFrame {
     public static final int SNAKE_PART_SIZE = 15;
     private static final Dimension FRAME_SIZE = new Dimension(SNAKE_PART_SIZE * 80, SNAKE_PART_SIZE * 50);
     private static final int FOOD_SIZE = SNAKE_PART_SIZE;
-    private int clockPeriod = 10;
+    private int clockPeriod = 30;
     private List<NeuralNetworkPlayer> lstPlayers = new ArrayList<>();
     private final Timer timer = new Timer();
     private boolean gameOver = false;
