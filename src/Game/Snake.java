@@ -170,22 +170,6 @@ public class Snake extends JFrame {
     }
 
     private void placeFood(AbstractPlayer player) {
-
-       /* final JLabel oldLabel = mapFoodLabels.get(player);
-        if (oldLabel != null) {
-            //SwingUtilities.invokeLater(()-> getContentPane().remove(oldLabel));
-        }
-
-        JLabel labelToBeDeleted = null;
-        for (Component component : getContentPane().getComponents()) {
-            if (player.getFood().getLocation().equals(component.getLocation()) && component instanceof JLabel) {
-                labelToBeDeleted = (JLabel) component;
-            }
-        }
-        if (labelToBeDeleted != null) {
-            getContentPane().remove(labelToBeDeleted);
-        }*/
-
         Point point;
         do {
             point = randomPoint();
@@ -263,14 +247,13 @@ public class Snake extends JFrame {
             int oldY = snake.get(i).getY();
 
             snake.get(i).setLocation(oldPos.x, oldPos.y);
-
             oldPos.x = oldX;
             oldPos.y = oldY;
-
         }
-        //player.getSetPointsUsedBySnake().clear();
-        //snake.forEach(part -> setPointsUsedBySnake.add(new Point(part.getX(), part.getY())));
-        //System.out.println("moving snake " + c + " to position " + player.getSnake().get(0).getX() + ", " + player.getSnake().get(0).getY());
+
+        if (newPositionHead.x >= FRAME_SIZE.width || newPositionHead.x < 0 || newPositionHead.y < 0 || newPositionHead.y >= FRAME_SIZE.height) {
+            player.setHasLost(true);
+        }
     }
 
     public enum Direction {
@@ -309,32 +292,16 @@ public class Snake extends JFrame {
             Point newP = new Point(p.x, p.y);
             switch (d) {
                 case LEFT:
-                    if (p.x == 0) {
-                        newP.x = Snake.FRAME_SIZE.width - Snake.SNAKE_PART_SIZE;
-                    } else {
-                        newP.x -= Snake.SNAKE_PART_SIZE;
-                    }
+                    newP.x -= Snake.SNAKE_PART_SIZE;
                     break;
                 case RIGHT:
-                    if (p.x + Snake.SNAKE_PART_SIZE == Snake.FRAME_SIZE.width) {
-                        newP.x = 0;
-                    } else {
-                        newP.x += Snake.SNAKE_PART_SIZE;
-                    }
+                    newP.x += Snake.SNAKE_PART_SIZE;
                     break;
                 case UP:
-                    if (p.y == 0) {
-                        newP.y = Snake.FRAME_SIZE.height - Snake.SNAKE_PART_SIZE;
-                    } else {
-                        newP.y -= Snake.SNAKE_PART_SIZE;
-                    }
+                    newP.y -= Snake.SNAKE_PART_SIZE;
                     break;
                 case DOWN:
-                    if (p.y + Snake.SNAKE_PART_SIZE == Snake.FRAME_SIZE.height) {
-                        newP.y = 0;
-                    } else {
-                        newP.y += Snake.SNAKE_PART_SIZE;
-                    }
+                    newP.y += Snake.SNAKE_PART_SIZE;
                     break;
             }
             return newP;

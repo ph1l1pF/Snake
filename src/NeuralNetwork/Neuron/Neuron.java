@@ -12,6 +12,12 @@ public abstract class Neuron implements Serializable {
     private IActivatorFunction activatorFunction;
     private List<Connection> ingoingConnections = new ArrayList<>();
     private double bias;
+    private double value;
+
+    public Neuron(String label) {
+        this.label = label;
+        this.bias = -5;
+    }
 
     public double getValue() {
         return value;
@@ -19,13 +25,6 @@ public abstract class Neuron implements Serializable {
 
     public void setValue(double value) {
         this.value = value;
-    }
-
-    private double value;
-
-    public Neuron(String label) {
-        this.label = label;
-        this.bias = -5;
     }
 
     public List<Connection> getIngoingConnections() {

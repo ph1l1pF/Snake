@@ -21,7 +21,6 @@ import java.util.List;
 
 public class Evolution {
 
-
     private static Evolution instance;
     private final int NUM_HIDDEN_NEURONS = 1;
     int numGeneration = 0;
@@ -52,7 +51,7 @@ public class Evolution {
     public void processEvolution(List<NeuralNetworkPlayer> lstPlayers) {
 
         if (lstPlayers == null) {
-            lstPlayers = createNeuralNetworkPlayers(30);
+            lstPlayers = createNeuralNetworkPlayers(5);
         }
         if (snakeGame != null) {
             SwingUtilities.invokeLater(() -> {

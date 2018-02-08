@@ -3,14 +3,14 @@ package EvolutionTests;
 import Evolution.CrossOver.ChromosomeCrossOver;
 import Evolution.Evolution;
 import Evolution.Mutation.MutationImpl;
-import NeuralNetwork.*;
+import NeuralNetwork.NeuralNetwork;
 import NeuralNetwork.Neuron.HiddenNeuron;
 import NeuralNetwork.Neuron.InputNeuron;
 import NeuralNetwork.Neuron.Neuron;
 import NeuralNetwork.Neuron.OutputNeuron;
 import NeuralNetwork.visuals.NetworkVisualization;
 import org.junit.Before;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class EvolutionTest {
     @Before

@@ -15,16 +15,6 @@ public abstract class AbstractPlayer {
     private Set<Point> setPointsUsedBySnake;
     private boolean hasLost;
     private int id;
-
-    public void setNumMoves(int numMoves) {
-        this.numMoves = numMoves;
-    }
-
-    public int getNumMoves() {
-
-        return numMoves;
-    }
-
     private int numMoves = 0;
 
     public AbstractPlayer(Color color, JPanel food, List<JPanel> snake, Set<Point> setPointsUsedBySnake) {
@@ -35,6 +25,15 @@ public abstract class AbstractPlayer {
         hasLost = false;
         direction = Snake.Direction.getRandomDirection();
         id = idCounter++;
+    }
+
+    public int getNumMoves() {
+
+        return numMoves;
+    }
+
+    public void setNumMoves(int numMoves) {
+        this.numMoves = numMoves;
     }
 
     public int getId() {
